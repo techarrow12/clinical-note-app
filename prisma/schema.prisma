@@ -3,17 +3,27 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// model Note {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   title     String
+//   content   String?
+//   userId    String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@map("notes")
+// }
 model Note {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) // Use UUIDs or @default(autoincrement()) for Int IDs
   title     String
-  content   String?
-  userId    String
+  content   String?  // Optional field
+  userId    String   // Assuming this links to another user model, consider using @relation in a real-world scenario
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("notes")
+  // No need for @@map("notes") as Prisma uses the model name for the table by default
 }
